@@ -1,18 +1,25 @@
-# Gowaru provider integration notes
+# Gowaru integration
 
-Upstream project: https://github.com/Gowaru/gowaru-nuvio-providers
+Upstream: https://github.com/Gowaru/gowaru-nuvio-providers
 
-The upstream repository is licensed under GPL-3.0. Preserve its LICENSE and all source-level notices before redistributing any upstream files. Record the exact upstream commit and file provenance in THIRD_PARTY_NOTICES.md when code is imported.
+Gowaru is a JavaScript provider collection, while FreeFlix is a native Kotlin/Android app. The adapter boundary is `MediaProvider.getStreams(MediaRequest)`, with normalized `MediaStream` and `SubtitleTrack` models.
 
-## Compatibility boundary
+## Integration plan
 
-Gowaru providers use a JavaScript provider contract that returns stream candidates for a media identifier and episode coordinates. This Android app currently defines the Kotlin-side normalized contract in `providers/Provider.kt`; the JavaScript runtime/bridge and upstream provider bundle have not yet been vendored.
+1. Pin and record the exact upstream commit and license.
+2. Inspect the upstream manifest and provider contract; do not assume every provider has the same capabilities.
+3. Add a JavaScript runtime/bridge compatible with the provider bundle's supported JS subset.
+4. Convert the app's TMDB/IMDb identifiers and episode coordinates to the upstream request format.
+5. Normalize returned stream candidates, headers, language, quality and subtitles.
+6. Present source candidates to the user and hand selected authorized media URLs to Media3.
+7. Add provider isolation, timeout, parsing, and playback tests.
 
-Before importing providers:
-1. Review each provider's target service and terms.
-2. Enable only sources for which the app operator has authorization.
-3. Do not include DRM circumvention, paywall bypass, credential theft, or access-control evasion.
-4. Preserve provider attribution, GPL-3.0 licensing, and third-party notices.
-5. Add tests for manifest parsing, provider isolation, stream normalization, headers, and subtitles.
+## Important separation
 
-The metadata catalogue and stream resolver are separate systems. A catalogue (for example, a configured TMDB integration) supplies titles, artwork, IDs, seasons, and episode metadata; providers resolve only authorized playback sources.
+TMDB powers title discovery and metadata. Gowaru-style providers resolve playback candidates; they are not the catalogue itself.
+
+Only activate sources that are authorized to provide the requested content. Do not implement DRM circumvention, paywall bypass, or access-control evasion. Do not claim that a provider works until it has been integrated and tested on-device.
+
+## Current status
+
+The current app has a working catalogue client and a Kotlin provider contract. The Gowaru JavaScript bundle and runtime bridge are not yet embedded.

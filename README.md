@@ -1,48 +1,43 @@
 # FreeFlix
 
-Native Android streaming-discovery and playback app for phones and tablets.
+Native Android application for phones and tablets, built with Kotlin, Jetpack Compose and AndroidX Media3.
 
-> This repository is the Android application project. The APK is built by the project's GitHub Actions workflow or by the maintainer's build agent.
+## Current implementation
 
-## Project direction
+- Native Android shell with dark, responsive Compose UI.
+- TMDB-powered trending movies, popular TV and multi-search.
+- French metadata, posters, backdrops and detail summaries.
+- Provider registry boundary and normalized stream/subtitle models.
+- Media3 dependencies are present for the playback layer.
 
-- Native Android app: Kotlin, Jetpack Compose, Material 3.
-- Phone and tablet layouts; no web/PWA target.
-- Media playback with AndroidX Media3 (ExoPlayer).
-- Search and metadata catalogue separated from playback sources.
-- Embedded provider-runtime architecture inspired by Gowaru's Nuvio provider format.
-- Provider manifests, enable/disable controls, source diagnostics and stream normalization.
-- French-first interface, with language-ready resources.
+## Configure the catalogue
 
-## Provider and copyright policy
+Create or edit `local.properties` at the project root (never commit this file):
 
-The upstream [Gowaru Nuvio providers](https://github.com/Gowaru/gowaru-nuvio-providers) project is GPL-3.0. Any source code redistributed from it must retain the applicable license and notices. This app will only activate providers and integrations that are authorized for the content and territories in which they are used. It will not implement DRM circumvention, paywall bypass, or access-control evasion.
+```properties
+TMDB_API_KEY=your_tmdb_v3_api_key
+```
 
-The provider runtime is designed to support documented, lawful providers and user-owned media sources. It does not imply that every third-party scraper from an upstream bundle is enabled or authorized.
+Alternatively set the `TMDB_API_KEY` environment variable or Gradle property. The key is injected into BuildConfig at build time.
+
+TMDB supplies catalogue metadata and artwork. It does not supply the video streams.
+
+## Gowaru
+
+Upstream: https://github.com/Gowaru/gowaru-nuvio-providers
+
+The app's provider contract is intentionally separate from the catalogue. Before enabling any upstream provider, preserve its license and notices and verify the relevant source is authorized for the content and territory. The current commit does not yet embed Gowaru's provider bundle or claim that its scrapers are active.
 
 ## Build
 
-Requirements:
-- JDK 17
-- Android SDK (compile SDK 36)
-- Gradle wrapper
-
-Build a debug APK:
+Requirements: JDK 17, Android SDK 36, Gradle wrapper.
 
 ```bash
 ./gradlew assembleDebug
 ```
 
-APK output:
-
-```
-app/build/outputs/apk/debug/app-debug.apk
-```
-
-## Configuration
-
-Add a TMDB API key to local.properties or the appropriate CI secret before enabling catalogue search. Never commit API secrets.
+APK: `app/build/outputs/apk/debug/app-debug.apk`
 
 ## License
 
-Application code: GPL-3.0-or-later unless a file states otherwise. Third-party components retain their own licenses; see their notices and dependency metadata.
+Application code: GPL-3.0-or-later. Third-party components retain their own licenses.

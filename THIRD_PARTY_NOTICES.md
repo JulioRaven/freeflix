@@ -1,8 +1,5 @@
 # Third-party notices
 
-- Gowaru Nuvio providers: https://github.com/Gowaru/gowaru-nuvio-providers — GPL-3.0. No upstream source files have been copied into this initial application scaffold yet.
-- AndroidX Media3: Apache License 2.0.
-- Jetpack Compose / AndroidX: Apache License 2.0.
-- Coil: Apache License 2.0.
-
-Verify dependency licenses and update this file whenever dependencies or upstream source files change.
+- TMDB API: FreeFlix uses TMDB for metadata and artwork. This product uses the TMDB API but is not endorsed or certified by TMDB. Configure an API key separately.
+- AndroidX Media3, Jetpack Compose, Retrofit, Gson and Coil are distributed under their respective upstream licenses.
+- Gowaru Nuvio providers: upstream project is GPL-3.0. No upstream provider source files are currently vendored in this repository. If imported, preserve its LICENSE, notices, source attribution and exact upstream commit.
